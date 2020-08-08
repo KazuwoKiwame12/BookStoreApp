@@ -1,3 +1,5 @@
+github.com/KazuwoKiwame12/WebAPI_with_DB v0.0.0-20200805172705-8b3be13e66cc h1:0R+fXDheM6ZOU9G56LT4uQAU8izlZpjYH+Wb58hRQno=
+github.com/KazuwoKiwame12/WebAPI_with_DB v0.0.0-20200805172705-8b3be13e66cc/go.mod h1:exWx7czo1I5Cc4gtVi8U7fDCvwKV4u2pQ22zEPwySxs=
 github.com/go-sql-driver/mysql v1.5.0 h1:ozyZYNQW3x3HtqT1jira07DN2PArx2v7/mN66gGcHOs=
 github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
 github.com/gorilla/mux v1.7.4 h1:VuZ8uybHlWmqV03+zRzdwKL4tUnIp1MAQtp1mIFE1bc=

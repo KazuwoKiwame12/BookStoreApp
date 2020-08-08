@@ -14,8 +14,8 @@ type Book struct {
 	DESCRIPTION string `json:"description"`
 }
 
-//get ...Book型のデータを渡す
-func get() []Book {
+//Get ...Book型のデータを渡す
+func Get() []Book {
 	db := db.Connect()
 	defer db.Close()
 
@@ -38,7 +38,7 @@ func get() []Book {
 }
 
 //delete ...DBから引数のidを持つbookを削除
-func delete(id int) bool {
+func Delete(id int) bool {
 	db := db.Connect()
 	defer db.Close()
 
@@ -57,7 +57,7 @@ func delete(id int) bool {
 	return isError(err2)
 }
 
-func add(title string, description string) bool {
+func Add(title string, description string) bool {
 	db := db.Connect()
 	defer db.Close()
 	_, err := db.Exec("INSERT INTO book (title, description) VALUES (?, ?)", title, description)
