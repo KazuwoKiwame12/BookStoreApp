@@ -11,3 +11,11 @@ $ cp .env.example
 ```bash
 $ go mod download
 ```
+
+## 注意事項
+ファイルの変更をcommitする前に、以下のコマンドを行い
+エラーがないか確認すること
+参考文献: https://golang.org/cmd/vet/
+```bash
+$ go tool vet [ディレクトリ]
+```
