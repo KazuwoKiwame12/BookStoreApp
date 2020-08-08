@@ -37,7 +37,7 @@ func Get() []Book {
 	return bookArgs
 }
 
-//delete ...DBから引数のidを持つbookを削除
+//Delete ...DBから引数のidを持つbookを削除
 func Delete(id int) bool {
 	db := db.Connect()
 	defer db.Close()
@@ -54,19 +54,20 @@ func Delete(id int) bool {
 		panic(err2.Error())
 	}
 
-	return isError(err2)
+	return isnotError(err2)
 }
 
+// Add ...DBへとデータを追加する
 func Add(title string, description string) bool {
 	db := db.Connect()
 	defer db.Close()
-	_, err := db.Exec("INSERT INTO book (title, description) VALUES (?, ?)", title, description)
-	return isError(err)
+	_, err := db.Exec("INSERT INTO book(title, description) VALUES (?, ?)", title, description)
+	return isnotError(err)
 }
 
-func isError(err error) bool {
-	if err == nil {
-		return true
+func isnotError(err error) bool {
+	if err != nil {
+		return false
 	}
-	return false
+	return true
 }

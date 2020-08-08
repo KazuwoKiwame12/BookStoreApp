@@ -9,15 +9,19 @@ import (
 
 	book "github.com/KazuwoKiwame12/book_store_app_api/DB/Model"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/schema"
 )
+
+type Form struct {
+	Title       string
+	Description string
+}
 
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/api/get", booksList).Methods("GET")
-	// TODO idしかdbに入らない
 	r.HandleFunc("/api/add", addBook).Methods("POST")
 	r.HandleFunc("/api/delete/{id}", deleteBook).Methods("DELETE")
-	r.HandleFunc("/api/test", test)
 
 	srv := &http.Server{
 		Handler:      r,
@@ -30,14 +34,11 @@ func main() {
 	log.Fatal(srv.ListenAndServe())
 }
 
-func test(w http.ResponseWriter, r *http.Request) {
-	log.Println("test関数")
-	w.Write([]byte("Hello"))
-}
-
+//==================API処理======================
 func booksList(w http.ResponseWriter, r *http.Request) {
 	books := book.Get()
-	//json形式に変換します
+
+	// Json化
 	bytes, err := json.Marshal(books)
 	if err != nil {
 		log.Fatal(err)
@@ -46,13 +47,22 @@ func booksList(w http.ResponseWriter, r *http.Request) {
 }
 
 func addBook(w http.ResponseWriter, r *http.Request) {
-	log.Println("add関数")
-	e := r.ParseForm()
-	log.Print(e)
-	title := r.Form.Get("title")
-	desc := r.Form.Get("desciption")
-	log.Printf("title:%s, desc: %s", title, desc)
-	result := book.Add(title, desc)
+	/* 参照:
+	https://github.com/gorilla/schema#example
+	https://golang.org/pkg/net/http/#Request.ParseMultipartForm
+	*/
+	err := r.ParseMultipartForm(1000)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	decoder := schema.NewDecoder()
+	var form Form
+	err = decoder.Decode(&form, r.PostForm)
+	if err != nil {
+		log.Fatal(err)
+	}
+	result := book.Add(form.Title, form.Description)
 	answer := "false!"
 	if result {
 		answer = "success!"
@@ -61,10 +71,8 @@ func addBook(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteBook(w http.ResponseWriter, r *http.Request) {
-	log.Printf("delete")
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
-	log.Printf(vars["id"])
 
 	result := book.Delete(id)
 	answer := "false!"
